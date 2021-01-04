@@ -1,0 +1,33 @@
+<h3>Notities</h3>
+
+<p>
+    Hier worden alle notities van een bepaalde gebruiker getoond.<br>
+    Wanneer er op een notitie geklikt wordt, dan moeten de details van een notitie getoond worden.
+</p>
+
+<div *ngIf="notes.length == 0">
+    Geen notities beschikbaar voor deze gebruiker.
+    <br><br>
+</div>
+
+<div *ngFor="let note of notes">
+    <a routerLink="/notedetail/{{ note.id }}">
+        <div *ngIf="note.title">
+            <label>Titel= {{ note.title }}</label>
+        </div>
+        <!--<label for="contentText">Content= </label><br>-->
+        <textarea id="contentText">{{ note.content }}</textarea>
+    </a>
+    <br>
+    <button (click)="deleteNote(note)">Notitie verwijderen</button>
+    <br><br>
+</div>
+
+<div>
+    Mogelijkheid om een nieuwe notitie toe te voegen.<br>
+    <label for="title">Titel: </label><input id="title" #title /><br>
+    <label for="content">Inhoud: </label><input id="content" #content /><br>
+    <label for="category">Categorie: </label><input id="category" #category /><br>
+    <button (click)="addNote(title.value, content.value, category.value); title.value=''; content.value=''; category.value='' ">Notitie toevoegen</button>
+    <!-- onmiddelijk naar het detail scherm gaan van de notitie, enkel titel opgeven? -->
+</div>

@@ -1,0 +1,27 @@
+<h2>Details van de gebruiker</h2>
+
+<p>
+    Weergave van de details en notities van de gebruiker.<br>
+    Mogelijkheid om de naam van de gebruiker te veranderen.
+</p>
+
+<div *ngIf="user">
+
+    <h3>{{ user.name | uppercase }} Details</h3>
+
+    <div>
+        <label>Naam: <input [(ngModel)]="user.name" placeholder="name"/></label>
+        <button (click)="updateUser()">Gebruiker bijwerken</button>
+    </div>
+
+    <app-note [user] = "user" ></app-note>
+
+    <!--<app-note-search [user] = "user" ></app-note-search>-->
+    <br>
+    <!-- Een knop toevoegen om de zoekfunctie te openen -->
+    <a routerLink="/search/{{ user.id }}">Zoeken</a>
+
+    <br><br>
+    <button (click)="goBack()">Terug</button>
+
+</div>
