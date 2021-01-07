@@ -5,9 +5,11 @@
     Als je op de naam klikt zie je al de notities van een gebruiker.
 </p>
 
-<div *ngIf="users.length == 0">
-    Geen gebruikers geregistreerd.
-    <br><br>
+<div *ngIf="users">
+    <div *ngIf="users.length == 0">
+        Geen gebruikers geregistreerd.
+        <br><br>
+    </div>
 </div>
 
 <div *ngFor="let user of users">
@@ -16,7 +18,8 @@
 </div>
 <br>
 <div>
-    Mogelijkheid om een nieuwe gebruiker toe te voegen.<br>
+    Mogelijkheid om een nieuwe gebruiker toe te voegen.
+    <br><br>
     <input #addName />
     <button (click)="addUser(addName.value); addName.value=''">Gebruiker toevoegen</button>
 </div>
