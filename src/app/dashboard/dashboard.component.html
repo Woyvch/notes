@@ -1,13 +1,11 @@
-<mat-accordion class="panel">
-  <mat-expansion-panel (opened)="panelOpenState = true"
-                       (closed)="panelOpenState = false">
+<mat-accordion class="panel" multi>
+  <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
-        Notitie zoeken
+        Zoek een notitie
       </mat-panel-title>
       <mat-panel-description>
-        Zoeken op titel, inhoud of categorie
-        <!--<mat-icon>search</mat-icon>-->
+        <!--Eventuele omschrijving-->
       </mat-panel-description>
     </mat-expansion-panel-header>
     <!-- Invoer van gegevens -->
@@ -15,6 +13,7 @@
       <mat-label>Titel of inhoud</mat-label>
       <input matInput #search >
     </mat-form-field>
+    <button mat-button (click)="searchNote(search.value); search.value='' ">Zoeken</button>
     <mat-form-field>
       <mat-label>Categorie</mat-label>
       <mat-select [(ngModel)]="selectedValue" name="categoryElement">
@@ -24,11 +23,39 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <p>You selected: {{ selectedValue }}</p>
+    <button mat-button (click)="getCategory(selectedValue)">Filteren</button>
     <!-- Actie knoppen -->
     <mat-action-row>
-      <button mat-button (click)="getNoteFromUser(userName); accordion.closeAll(); search.value='' ">Annuleer</button>
-      <button mat-button (click)="searchNote(search.value); search.value='' ">Zoeken</button>
+      <button mat-button (click)="getNoteFromUser(userName); search.value=''; accordion.closeAll()">Annuleer</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Maak een nieuwe notitie aan
+      </mat-panel-title>
+      <mat-panel-description>
+        <!--Eventuele omschrijving-->
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <mat-label>Titel</mat-label>
+      <input matInput #title>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Inhoud</mat-label>
+      <input matInput #content>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Category</mat-label>
+      <input matInput #category>
+    </mat-form-field>
+    <mat-action-row>
+      <button mat-button (click)="accordion.closeAll(); title.value=''; content.value=''; category.value='' ">Annuleer</button>
+      <button mat-button (click)="addNote(title.value, content.value, category.value);
+                                  title.value=''; content.value=''; category.value='';
+                                  accordion.closeAll()">Voeg toe</button>
     </mat-action-row>
   </mat-expansion-panel>
 </mat-accordion>
@@ -36,15 +63,6 @@
 <div class="grid-container">
 
   <h1 class="mat-h1">Notities van {{ userName }}</h1>
-  
-  <form class="addNote">
-    <button mat-icon-button
-            matTooltip="Notitie toevoegen"
-            aria-label="Notitie toevoegen"
-            (click)="addNote2()">
-            <mat-icon>add</mat-icon>
-    </button>
-  </form>
 
   <mat-grid-list cols="2" rowHeight="350px">
     <mat-grid-tile *ngFor="let note of notes">

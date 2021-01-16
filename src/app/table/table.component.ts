@@ -1,17 +1,15 @@
 import { AfterViewInit, Component, OnInit, ViewChild, Inject } from '@angular/core';
+/* Componenten */
+import { User } from '../user'
+import { UserService } from '../user.service';
+import { DialogUsernameComponent } from '../dialog-username/dialog-username.component';
+/* Material */
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
 import { TableDataSource, TableItem } from './table-datasource';
 import { MatTableDataSource } from '@angular/material/table'
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-
-import { User } from '../user'
-import { UserService } from '../user.service';
-import { ThrowStmt } from '@angular/compiler';
-import { Observable } from 'rxjs';
-import { UserDetailComponent } from '../user-detail/user-detail.component';
-import { DialogUsernameComponent } from '../dialog-username/dialog-username.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -31,7 +29,7 @@ export class TableComponent implements AfterViewInit, OnInit {
   dataSource: User[];
   sortedData: User[];
 
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
+  /* Kolommen die toegevoegd worden in de tabel */
   displayedColumns = ['id', 'name', 'options'];
 
   constructor(private userService: UserService, 
@@ -74,7 +72,6 @@ export class TableComponent implements AfterViewInit, OnInit {
   getUsers() {
     this.userService.getUsers().subscribe(
       (response: User[]) => {
-        //this.dataSource = response;
         this.dataSource = response;
         console.log(this.dataSource);
       }
@@ -91,7 +88,6 @@ export class TableComponent implements AfterViewInit, OnInit {
         this.table.renderRows();
       },
       (error) => { // error
-        //console.error('error caught in component: ' + error);
         this.snackBar.open(`${error}`, 'Ok', { duration: 5000 });
       }
     );
@@ -102,8 +98,7 @@ export class TableComponent implements AfterViewInit, OnInit {
       'id': id,
       'name': name
     };
-    console.log(user);
-    // Vragen of de gebruiker inderdaad verwijderd moet worden
+    /* Vragen of de gebruiker inderdaad verwijderd moet worden */
     this.userService.deleteUser(user).subscribe(
       (response) => {
         console.log(response);
@@ -114,14 +109,14 @@ export class TableComponent implements AfterViewInit, OnInit {
 
   openDialog(id: number, name: string): void {
     let user: User;
-    // Een dialoogvenster openen
+    /* Een dialoogvenster openen */
     let dialogRef = this.dialog.open(DialogUsernameComponent, {
       data: {
         id,
         name,
       }
     });
-    // De naam van de gebruiker wijzigen
+    /* De naam van de gebruiker wijzigen */
     dialogRef.afterClosed().subscribe(
       (result) => {
         user = {
@@ -132,12 +127,11 @@ export class TableComponent implements AfterViewInit, OnInit {
           this.userService.updateUser(user).subscribe(
             (response) => {
               console.log(response);
-              this.snackBar.open(`${response}`, 'Ok', { duration: 5000 });
               this.getUsers();
             }
           )
         }
-        console.log(`Dialog result: id=${user.id}, name=${user.name}`);
+        //console.log(`Dialog result: id=${user.id}, name=${user.name}`);
       }
     );
   }

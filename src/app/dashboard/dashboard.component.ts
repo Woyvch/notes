@@ -1,13 +1,11 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { map } from 'rxjs/operators';
-import { Breakpoints, BreakpointObserver } from '@angular/cdk/layout';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Location } from '@angular/common';
-
+/* Componenten*/
 import { User } from '../user';
 import { Note } from '../note';
 import { NotesService } from '../notes.service';
 import { DialogNoteComponent } from '../dialog-note/dialog-note.component'
+/* Material */
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatDialog } from '@angular/material/dialog';
 import { MatAccordion } from '@angular/material/expansion';
@@ -21,13 +19,10 @@ import { MatAccordion } from '@angular/material/expansion';
 export class DashboardComponent implements OnInit {
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
-  
-  panelOpenState = false;
 
   selectedValue: string;
   
   notes: Note[];
-  //categories: Note[];
 
   // Route parameters
   userId = +this.route.snapshot.paramMap.get('id'); // user.id
@@ -35,38 +30,13 @@ export class DashboardComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private location: Location,
-    private breakpointObserver: BreakpointObserver,
     private notesService: NotesService,
     public dialog: MatDialog, 
     public snackBar: MatSnackBar
   ) { }
-
-  // Based on the screen size, switch from standard to one column per row
-  /*cards = this.breakpointObserver.observe(Breakpoints.Handset).pipe(
-    map(({ matches }) => {
-      if (matches) { 
-        return [
-          { title: 'Card 1', cols: 2, rows: 1 },
-          { title: 'Card 2', cols: 2, rows: 1 },
-          { title: 'Card 3', cols: 2, rows: 1 },
-          { title: 'Card 4', cols: 2, rows: 1 }
-        ];
-      }
-
-      return [
-        { title: 'Card 1', cols: 1, rows: 1 },
-        { title: 'Card 2', cols: 1, rows: 1 },
-        { title: 'Card 3', cols: 1, rows: 1 },
-        { title: 'Card 4', cols: 1, rows: 1 }
-      ];
-    })
-  );*/
   
   ngOnInit(): void {
-    console.log(`id: ${this.userId}, name: ${this.userName}`);
     this.getNoteFromUser(this.userName);
-    //this.getCategories();
   }
 
   getNoteFromUser(name: string): void {
@@ -76,33 +46,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  // Alle caterogieën van een gebruiker ophalen
-  /*getCategories(): void {
-    let id = +this.route.snapshot.paramMap.get('id'); // user.id
-    this.notesService.getCategories({id} as User).subscribe(result => {
-      this.categories = result;
-      console.log(result);
-      this.createSelect();  
-    });
-  };
-
-  createSelect(): void {
-    for (let index = 0; index < this.categories.length; index++) {
-      const element: Note = this.categories[index];
-      if (element.category) {
-        // Create the "option" element and add it to the "select" element
-        let option = document.createElement("option");
-        option.setAttribute("value", element.category);
-        // Add a name to the "option element"
-        let name = document.createTextNode(element.category);
-        option.appendChild(name);
-        document.getElementById("categoryElement").appendChild(option);
-      };
-    };
-  };*/
-
   deleteNote(note: Note) {
-    //this.notes =  this.notes.filter(n => n !== note);
     this.notesService.deleteNote(note).subscribe(
       result => {
         this.notes =  this.notes.filter(n => n !== note);
@@ -111,7 +55,7 @@ export class DashboardComponent implements OnInit {
     );
   }
 
-  /*addNote(title: String, content: String, category: string) {
+  addNote(title: String, content: String, category: string) {
     let user: User = {
       'id': this.userId,
       'name': this.userName,
@@ -124,49 +68,20 @@ export class DashboardComponent implements OnInit {
       this.notes.push(note);
       console.log(note);
     });
-  }*/
-
-  addNote2(): void {
-    let title: string;
-    let content: string;
-    let category: string;
-    let user: User = {
-      'id': this.userId,
-      'name': this.userName,
-    };
-    // Een dialoogvenster openen
-    let dialogRef = this.dialog.open(DialogNoteComponent, {
-      data: {title, content, category }
-    });
-    // De notitie wijzigen
-    dialogRef.afterClosed().subscribe(
-      (result) => {
-        if (result != undefined) {
-          this.notesService.addNote(user, result).subscribe(
-            (response) => {
-              console.log(response);
-              this.snackBar.open(`${response}`, 'Ok', { duration: 5000 });
-            }
-          );
-          this.getNoteFromUser(user.name);
-        };
-      }
-    );
   }
 
   updateNote(note: Note): void {
-    // Een dialoogvenster openen
+    /* Een dialoogvenster openen */
     let dialogRef = this.dialog.open(DialogNoteComponent, {
       data: note
     });
-    // De notitie wijzigen
+    /* De notitie wijzigen */
     dialogRef.afterClosed().subscribe(
       (result) => {
         if (result != undefined) {
           this.notesService.updateNote(note).subscribe(
             (response) => {
               console.log(response);
-              this.snackBar.open(`${response}`, 'Ok', { duration: 5000 });
             }
           );
         };
@@ -175,7 +90,6 @@ export class DashboardComponent implements OnInit {
   }
 
   searchNote(input: string): void {
-    console.log(input);
     let user: User = {
       'id': this.userId,
       'name': this.userName,
@@ -188,21 +102,13 @@ export class DashboardComponent implements OnInit {
     };
   }
 
-  /*searchNote(title: string, content: string): void {
-    let id = +this.route.snapshot.paramMap.get('id'); // user.id
-    if (title || content) {
-      this.notesService.searchNote({id} as User, {title, content} as Note).subscribe(result => {
+  getCategory(category: string): void {
+    if (category) {
+      this.notesService.getCategory({category} as Note).subscribe(result => {
         this.notes = result;
         console.log(result);
-      });
+      })
     };
-  };*/
-
-  getCategory(category: string): void {
-    this.notesService.getCategory({category} as Note).subscribe(result => {
-      this.notes = result;
-      console.log(result);
-    })
   }
 
 }
