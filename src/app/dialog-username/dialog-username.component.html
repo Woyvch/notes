@@ -1,0 +1,11 @@
+<h2 mat-dialog-title>Wijzig gebruikersnaam</h2>
+
+<mat-dialog-content>
+    <mat-label>Geef een nieuwe gebruikersnaam:</mat-label>
+    <input matInput [(ngModel)]="data.name">
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Annuleer</button>
+    <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Wijzig</button>
+</mat-dialog-actions>

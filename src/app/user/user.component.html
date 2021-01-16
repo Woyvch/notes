@@ -12,14 +12,15 @@
     </div>
 </div>
 
-<div *ngFor="let user of users">
-    <a routerLink="/userdetail/{{ user.id }}"> Gebruikersnaam= {{ user.name }} </a>
-    <button (click)="deleteUser(user)">Verwijder gebruiker</button>
+<div class="users" *ngFor="let user of users">
+    <a mat-button routerLink="/userdetail/{{ user.id }}">{{ user.name }}</a>
+    <button mat-stroked-button (click)="deleteUser(user)">Verwijder gebruiker</button>
 </div>
-<br>
+
 <div>
-    Mogelijkheid om een nieuwe gebruiker toe te voegen.
-    <br><br>
-    <input #addName />
-    <button (click)="addUser(addName.value); addName.value=''">Gebruiker toevoegen</button>
+    Mogelijkheid om een nieuwe gebruiker toe te voegen.<br>
+    <label>Gebruiker:
+        <input matInput #addName />
+    </label>
 </div>
+<button mat-button (click)="addUser(addName.value); addName.value=''">Gebruiker toevoegen</button>

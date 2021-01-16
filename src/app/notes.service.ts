@@ -89,21 +89,19 @@ export class NotesService {
   }
 
   // Een notitie opzoeken aan de hand van een titel of de inhoud
-
   /*searchNote = (user: User, note: Note): Observable<Note[]> => {
-    // Gebruik makend van route parameters
-    let id = user.id;
-    let title = note.title;
-    //return this.http.get<Note[]>(`https://mercury-chivalrous-structure.glitch.me/search?id=${id}&title=${title}`, this.httpOptions);
-    return this.http.get<Note[]>(`https://mercury-chivalrous-structure.glitch.me/users/${id}/notes/${title}`, this.httpOptions);
-  }*/
-
-  searchNote = (user: User, note: Note): Observable<Note[]> => {
     // Gebruik makend van query parameters   
     let id = user.id;
     let title = note.title.trim();
     let content = note.content.trim();
     let params = new HttpParams({ fromString: `id=${id}&title=${title}&content=${content}` });
+    return this.http.get<Note[]>(`https://mercury-chivalrous-structure.glitch.me/searchnote?`, {params});
+  }*/
+  searchNote = (user: User, search: string): Observable<Note[]> => {
+    // Gebruik makend van query parameters   
+    let id = user.id;
+    search = search.trim();
+    let params = new HttpParams({ fromString: `id=${id}&search=${search}` });
     return this.http.get<Note[]>(`https://mercury-chivalrous-structure.glitch.me/searchnote?`, {params});
   }
 

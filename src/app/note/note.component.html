@@ -2,7 +2,7 @@
 
 <p>
     Hier worden alle notities van een bepaalde gebruiker getoond.<br>
-    Wanneer er op een notitie geklikt wordt, dan moeten de details van een notitie getoond worden.
+    Wanneer er op een notitie geklikt wordt, dan worden de details van een notitie getoond.
 </p>
 
 <div *ngIf="notes">
@@ -12,24 +12,34 @@
     </div>
 </div>
 
-<div *ngFor="let note of notes">
+<div class="notes" *ngFor="let note of notes">
     <a routerLink="/notedetail/{{ note.id }}">
         <div *ngIf="note.title">
-            <label>Titel= {{ note.title }}</label>
+            <label>{{ note.title }}</label>
         </div>
+        <!--<label for="contentText">
+            <textarea disabled="true" id="contentText">{{ note.content }}</textarea>
+            <span disabled="true" id="contentText">{{ note.content }}</span>
+        </label>-->
+        <!--<label>{{ note.content }}</label>-->
         <textarea id="contentText">{{ note.content }}</textarea>
     </a>
     <br>
     <button (click)="deleteNote(note)">Notitie verwijderen</button>
-    <br><br>
 </div>
 
 <div>
     Mogelijkheid om een nieuwe notitie toe te voegen.
     <br><br>
-    <label for="title">Titel: </label><input id="title" #title /><br>
-    <label for="content">Inhoud: </label><textarea id="content" #content ></textarea><br>
-    <label for="category">Categorie: </label><input id="category" #category /><br>
+    <label for="title">Titel: 
+        <input id="title" #title />
+    </label><br>
+    <label for="content">Inhoud: 
+        <textarea id="content" #content ></textarea>
+    </label><br>
+    <label for="category">Categorie: 
+        <input id="category" #category />
+    </label><br>
     <button (click)="addNote(title.value, content.value, category.value); title.value=''; content.value=''; category.value='' ">Notitie toevoegen</button>
     <!-- onmiddelijk naar het detail scherm gaan van de notitie, enkel titel opgeven? -->
 </div>

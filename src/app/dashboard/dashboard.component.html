@@ -1,0 +1,76 @@
+<mat-accordion class="panel">
+  <mat-expansion-panel (opened)="panelOpenState = true"
+                       (closed)="panelOpenState = false">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Notitie zoeken
+      </mat-panel-title>
+      <mat-panel-description>
+        Zoeken op titel, inhoud of categorie
+        <!--<mat-icon>search</mat-icon>-->
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <!-- Invoer van gegevens -->
+    <mat-form-field>
+      <mat-label>Titel of inhoud</mat-label>
+      <input matInput #search >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Categorie</mat-label>
+      <mat-select [(ngModel)]="selectedValue" name="categoryElement">
+        <mat-option>None</mat-option>
+        <mat-option *ngFor="let note of notes" [value]="note.category">
+          {{ note.category }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <p>You selected: {{ selectedValue }}</p>
+    <!-- Actie knoppen -->
+    <mat-action-row>
+      <button mat-button (click)="getNoteFromUser(userName); accordion.closeAll(); search.value='' ">Annuleer</button>
+      <button mat-button (click)="searchNote(search.value); search.value='' ">Zoeken</button>
+    </mat-action-row>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div class="grid-container">
+
+  <h1 class="mat-h1">Notities van {{ userName }}</h1>
+  
+  <form class="addNote">
+    <button mat-icon-button
+            matTooltip="Notitie toevoegen"
+            aria-label="Notitie toevoegen"
+            (click)="addNote2()">
+            <mat-icon>add</mat-icon>
+    </button>
+  </form>
+
+  <mat-grid-list cols="2" rowHeight="350px">
+    <mat-grid-tile *ngFor="let note of notes">
+      <mat-card class="dashboard-card">
+        <mat-card-header>
+          <mat-card-title>
+            <div *ngIf="note.title">
+              {{ note.title }}
+            </div>
+            <button mat-icon-button class="more-button" 
+                    [matMenuTriggerFor]="menu" 
+                    aria-label="Toggle menu">
+                    <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu" xPosition="before">
+              <button mat-menu-item (click)="updateNote(note)">Wijzigen</button>
+              <button mat-menu-item (click)="deleteNote(note)">Verwijderen</button>
+            </mat-menu>
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="dashboard-card-content">
+          <div>
+            <mat-textarea>{{ note.content }}</mat-textarea>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

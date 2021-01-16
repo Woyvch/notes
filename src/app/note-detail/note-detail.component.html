@@ -5,22 +5,22 @@
   Mogelijkheid om de titel en inhoud van een notitie te bewerken.<br>
 </p>
 
-<div *ngIf="note">
+<div class="noteDetails" *ngIf="note">
 
   <h3>{{ note.title | uppercase }} Details</h3>
 
   <div>
-    <label> Titel: <input [(ngModel)]="note.title" placeholder="title"/> </label>
+    <label> Titel: 
+      <input [(ngModel)]="note.title" placeholder="title"/>
+    </label>
     <!--<label> Content: <input [(ngModel)]="note.content" placeholder="content"/> </label>-->
-    <label> Inhoud: <textarea [(ngModel)]="note.content" placeholder="content"></textarea> </label>
-    <label> Categorie: <input [(ngModel)]="note.category" placeholder="category"/> </label>
-
-    <!--<label for="category">Categorie:</label>
-    <select name="category" id="category">
-      <option value="note.category">{{ note.category }}</option>
-    </select>-->
-
-    <br><br>
+    <label> Inhoud: 
+      <textarea [(ngModel)]="note.content" placeholder="content"></textarea> 
+    </label>
+    <label> Categorie: 
+      <input [(ngModel)]="note.category" placeholder="category"/> 
+    </label>
+    <br>
     <button (click)="updateNote()">Notitie bijwerken</button>
   </div>
   <br>

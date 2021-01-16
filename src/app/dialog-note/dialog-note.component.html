@@ -1,0 +1,23 @@
+<h2 mat-dialog-title>Notitie</h2>
+
+<mat-dialog-content>
+    <mat-form-field>
+        <mat-label>Titel</mat-label>
+        <input matInput [(ngModel)]="data.title">
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Inhoud</mat-label>
+        <textarea matInput [(ngModel)]="data.content"></textarea>
+    </mat-form-field>
+    <br>
+    <mat-form-field>
+        <mat-label>Categorie</mat-label>
+        <input matInput [(ngModel)]="data.category">
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">Annuleer</button>
+    <button mat-button [mat-dialog-close]="data" cdkFocusInitial>Wijzig</button>
+</mat-dialog-actions>

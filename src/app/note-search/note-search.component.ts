@@ -29,24 +29,14 @@ export class NoteSearchComponent implements OnInit {
     this.getCategories();
   }
 
-  /*searchNote(title: string): void {
-    let id = +this.route.snapshot.paramMap.get('id'); // user.id
-    if (title) {
-      /*this.notesService.searchNote({id} as User, {title} as Note).subscribe(result => {
-        this.notes = result;
-        console.log(result);
-      });
-    }
-  }*/
-
   // Een notitie zoeken aan de hand van de titel of de inhoud
   searchNote(title: string, content: string): void {
     let id = +this.route.snapshot.paramMap.get('id'); // user.id
     if (title || content) {
-      this.notesService.searchNote({id} as User, {title, content} as Note).subscribe(result => {
+      /*this.notesService.searchNote({id} as User, {title, content} as Note).subscribe(result => {
         this.notes = result;
         console.log(result);
-      });
+      });*/
     };
   };
 

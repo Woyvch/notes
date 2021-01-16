@@ -27,9 +27,9 @@ export class UserComponent implements OnInit {
   }
 
   getUsers(): void {
-    this.userService.getUsers().subscribe((users: User[]) => {
-      this.users = users;
-      console.log(users);
+    this.userService.getUsers().subscribe((result: User[]) => {
+      this.users = result;
+      console.log(result);
     });
   }
 
@@ -43,6 +43,7 @@ export class UserComponent implements OnInit {
   }
 
   deleteUser(user: User) {
+    // Vragen of de gebruiker inderdaad verwijderd moet worden
     this.userService.deleteUser(user).subscribe((result) => {
       this.users =  this.users.filter(n => n !== user);
       console.log(result);

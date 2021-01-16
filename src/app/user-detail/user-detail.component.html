@@ -5,14 +5,16 @@
     Mogelijkheid om de naam van de gebruiker te veranderen.
 </p>
 
-<div *ngIf="user">
+<div class="userDetails" *ngIf="user">
 
     <h3>{{ user.name | uppercase }} Details</h3>
 
     <div>
-        <label>Naam: <input [(ngModel)]="user.name" placeholder="name"/></label>
-        <button (click)="updateUser()">Gebruiker bijwerken</button>
+        <label>Naam: 
+            <input [(ngModel)]="user.name" placeholder="name"/>
+        </label>
     </div>
+    <button (click)="updateUser()">Gebruiker bijwerken</button>
 
     <app-note [user] = "user" ></app-note>
     <br>
@@ -20,7 +22,7 @@
     <!-- Een knop toevoegen om de zoekfunctie te openen -->
     <a routerLink="/search/{{ user.id }}">Zoeken</a>
 
-    <br><br>
+    <br>
     <button (click)="goBack()">Terug</button>
 
 </div>
