@@ -6,6 +6,15 @@
 </mat-dialog-content>
 
 <mat-dialog-actions>
-    <button mat-button (click)="onNoClick()">Annuleer</button>
-    <button mat-button [mat-dialog-close]="data.name" cdkFocusInitial>Ok</button>
+  <button 
+    mat-button 
+    (click)="onNoClick()">
+    <span>Annuleer</span>
+  </button>
+  <button 
+    mat-button 
+    [mat-dialog-close]="data.name" 
+    cdkFocusInitial>
+    <span>Ok</span>
+  </button>
 </mat-dialog-actions>

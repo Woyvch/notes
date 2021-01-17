@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams, HttpErrorResponse } from '@angular
 import { Injectable } from '@angular/core';
 
 import { Observable, throwError, of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError } from 'rxjs/operators';
 
 import { Note } from './note'
 import { User } from './user';
@@ -24,27 +24,28 @@ export class NotesService {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
 
-  /*
-   * Handle Http operation that failed.
-   * Let the app continue.
-   * @param operation - name of the operation that failed
-   * @param result - optional value to return as the observable result
-   */
-  private handleError<T>(operation = 'operation', result?: T) {
-    return (error: any): Observable<T> => {
-      // TODO: send the error to remote logging infrastructure
-      console.error(error); // log to console instead
-      // TODO: better job of transforming error for user consumption
-      //this.log(`${operation} failed: ${error.message}`);
-      // Let the app keep running by returning an empty result.
-      return of(result as T);
-    };
+  /* Eventuele errors opvangen */
+  private handleError(error: HttpErrorResponse) {
+    if (error.error instanceof ErrorEvent) {
+      // A client-side or network error occurred. Handle it accordingly.
+      console.error('An error occurred:', error.error.message);
+    } else {
+      // The backend returned an unsuccessful response code.
+      // The response body may contain clues as to what went wrong.
+      console.error(
+        `Backend returned code ${error.status}, ` +
+        `body was: ${error.error}`);
+    }
+    // Return an observable with a user-facing error message.
+    return throwError(`${error.error}`);
   }
 
   // Opvragen van alle notities
   getNotes = (): Observable<Note[]> => { // Observable niet nodig?
     return this.http.get<Note[]>(this.notesUrl, this.httpOptions)
-    .pipe(catchError(this.handleError<Note[]>('getNotes', [])));
+    .pipe(
+      catchError(this.handleError)
+    );
   }
 
   // Opvragen van een bepaalde notitie
@@ -76,7 +77,8 @@ export class NotesService {
     let data = {
       'id': note.id,
       'title': note.title,
-      'content': note.content
+      'content': note.content,
+      'category': note.category
     };
     // PUT data zit in de HTTP-body
     return this.http.put<Note>(this.notesUrl, data, this.httpOptions);
@@ -89,14 +91,6 @@ export class NotesService {
   }
 
   // Een notitie opzoeken aan de hand van een titel of de inhoud
-  /*searchNote = (user: User, note: Note): Observable<Note[]> => {
-    // Gebruik makend van query parameters   
-    let id = user.id;
-    let title = note.title.trim();
-    let content = note.content.trim();
-    let params = new HttpParams({ fromString: `id=${id}&title=${title}&content=${content}` });
-    return this.http.get<Note[]>(`https://mercury-chivalrous-structure.glitch.me/searchnote?`, {params});
-  }*/
   searchNote = (user: User, search: string): Observable<Note[]> => {
     // Gebruik makend van query parameters   
     let id = user.id;
@@ -116,5 +110,4 @@ export class NotesService {
     let data = note.category ;
     return this.http.get<Note[]>(`https://mercury-chivalrous-structure.glitch.me/category/${data}`, this.httpOptions);
   }
-
 }

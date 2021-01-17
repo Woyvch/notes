@@ -1,4 +1,5 @@
 <mat-accordion class="panel" multi>
+
   <mat-expansion-panel>
     <mat-expansion-panel-header>
       <mat-panel-title>
@@ -10,23 +11,39 @@
     </mat-expansion-panel-header>
     <!-- Invoer van gegevens -->
     <mat-form-field>
-      <mat-label>Titel of inhoud</mat-label>
+      <mat-label> Titel of inhoud </mat-label>
       <input matInput #search >
     </mat-form-field>
-    <button mat-button (click)="searchNote(search.value); search.value='' ">Zoeken</button>
+    <button 
+      mat-button 
+      (click)="searchNote(search.value); search.value='' ">
+      <span> Zoeken </span>
+    </button>
     <mat-form-field>
-      <mat-label>Categorie</mat-label>
-      <mat-select [(ngModel)]="selectedValue" name="categoryElement">
-        <mat-option>None</mat-option>
-        <mat-option *ngFor="let note of notes" [value]="note.category">
+      <mat-label> Categorie </mat-label>
+      <mat-select 
+        [(ngModel)]="selectedValue" 
+        name="categoryElement">
+        <mat-option> None </mat-option>
+        <mat-option 
+          *ngFor="let note of notes" 
+          [value]="note.category">
           {{ note.category }}
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <button mat-button (click)="getCategory(selectedValue)">Filteren</button>
+    <button 
+      mat-button
+      (click)="getCategory(selectedValue)">
+      <span> Filteren </span>
+    </button>
     <!-- Actie knoppen -->
     <mat-action-row>
-      <button mat-button (click)="getNoteFromUser(userName); search.value=''; accordion.closeAll()">Annuleer</button>
+      <button 
+        mat-button
+        (click)="getNoteFromUser(userName); search.value=''; accordion.closeAll()">
+        <span> Annuleer </span>
+      </button>
     </mat-action-row>
   </mat-expansion-panel>
 
@@ -40,31 +57,40 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <mat-form-field>
-      <mat-label>Titel</mat-label>
+      <mat-label> Titel </mat-label>
       <input matInput #title>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Inhoud</mat-label>
+      <mat-label> Inhoud </mat-label>
       <input matInput #content>
     </mat-form-field>
     <mat-form-field>
-      <mat-label>Category</mat-label>
+      <mat-label> Category </mat-label>
       <input matInput #category>
     </mat-form-field>
     <mat-action-row>
-      <button mat-button (click)="accordion.closeAll(); title.value=''; content.value=''; category.value='' ">Annuleer</button>
-      <button mat-button (click)="addNote(title.value, content.value, category.value);
-                                  title.value=''; content.value=''; category.value='';
-                                  accordion.closeAll()">Voeg toe</button>
+      <button 
+        mat-button
+        (click)="accordion.closeAll(); title.value=''; content.value=''; category.value='' ">
+        <span> Annuleer </span>
+      </button>
+      <button 
+        mat-button 
+        (click)="addNote(title.value, content.value, category.value);
+                title.value=''; content.value=''; category.value='';
+                accordion.closeAll()">
+        <span> Voeg toe </span>
+      </button>
     </mat-action-row>
   </mat-expansion-panel>
+
 </mat-accordion>
 
-<div class="grid-container">
+<div class="grid-container" #gridContainer>
 
   <h1 class="mat-h1">Notities van {{ userName }}</h1>
 
-  <mat-grid-list cols="2" rowHeight="350px">
+  <mat-grid-list cols="{{columnNum}}" rowHeight="250px">
     <mat-grid-tile *ngFor="let note of notes">
       <mat-card class="dashboard-card">
         <mat-card-header>
@@ -72,20 +98,45 @@
             <div *ngIf="note.title">
               {{ note.title }}
             </div>
-            <button mat-icon-button class="more-button" 
-                    [matMenuTriggerFor]="menu" 
-                    aria-label="Toggle menu">
-                    <mat-icon>more_vert</mat-icon>
+            <button 
+              mat-icon-button class="more-button" 
+              [matMenuTriggerFor]="menu" 
+              aria-label="Toggle menu">
+              <mat-icon> more_vert </mat-icon>
             </button>
             <mat-menu #menu="matMenu" xPosition="before">
-              <button mat-menu-item (click)="updateNote(note)">Wijzigen</button>
-              <button mat-menu-item (click)="deleteNote(note)">Verwijderen</button>
+              <button 
+                mat-menu-item 
+                (click)="updateNote(note)">
+                <mat-icon> edit </mat-icon>
+                <span> Wijzigen </span>
+              </button>
+              <button 
+                mat-menu-item
+                [matMenuTriggerFor]="bevestigen">
+                <mat-icon> delete </mat-icon>
+                <span> Verwijder </span>
+              </button>
+            </mat-menu>
+            <mat-menu #bevestigen="matMenu">
+              <button mat-menu-item>
+                <span> Annuleer </span>
+              </button>
+              <button 
+                mat-menu-item 
+                (click)="deleteNote(note)">
+                <span> Ok </span>
+              </button>
             </mat-menu>
           </mat-card-title>
         </mat-card-header>
         <mat-card-content class="dashboard-card-content">
           <div>
             <mat-textarea>{{ note.content }}</mat-textarea>
+          </div>
+          <div *ngIf="note.category" class="categorie">
+            <mat-label>Categorie: </mat-label>
+            <mat-textarea>{{ note.category }}</mat-textarea>
           </div>
         </mat-card-content>
       </mat-card>

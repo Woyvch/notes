@@ -1,15 +1,12 @@
-import { AfterViewInit, Component, OnInit, ViewChild, Inject } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 /* Componenten */
 import { User } from '../user'
 import { UserService } from '../user.service';
 import { DialogUsernameComponent } from '../dialog-username/dialog-username.component';
 /* Material */
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, Sort } from '@angular/material/sort';
 import { MatTable } from '@angular/material/table';
-import { TableDataSource, TableItem } from './table-datasource';
-import { MatTableDataSource } from '@angular/material/table'
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -21,53 +18,25 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class TableComponent implements AfterViewInit, OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatTable) table: MatTable<User>;
 
-  data: User[];
-  //dataSource = new MatTableDataSource(this.data);
   dataSource: User[];
-  sortedData: User[];
 
   /* Kolommen die toegevoegd worden in de tabel */
   displayedColumns = ['id', 'name', 'options'];
 
   constructor(private userService: UserService, 
               public dialog: MatDialog, 
-              public snackBar: MatSnackBar) {
-                //this.sortedData = this.data.slice();
-               }
+              public snackBar: MatSnackBar
+              ) { }
 
   ngOnInit() {
     this.getUsers();
   }
 
   ngAfterViewInit() {
-    //this.dataSource.sort = this.sort;
-    //this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
   }
-
-  /*sortData(sort: Sort) {
-    const data = this.data.slice();
-    if (!sort.active || sort.direction === '') {
-      this.sortedData = data;
-      return;
-    }
-
-    this.sortedData = data.sort((a, b) => {
-      const isAsc = sort.direction === 'asc';
-      switch (sort.active) {
-        case 'id': return this.compare(a.id, b.id, isAsc);
-        case 'name': return this.compare(a.name, b.name, isAsc);
-        default: return 0;
-      }
-    });
-  }
-
-  compare(a: number | string, b: number | string, isAsc: boolean) {
-    return (a < b ? -1 : 1) * (isAsc ? 1 : -1);
-  }*/
 
   getUsers() {
     this.userService.getUsers().subscribe(
@@ -107,7 +76,7 @@ export class TableComponent implements AfterViewInit, OnInit {
     );
   }
 
-  openDialog(id: number, name: string): void {
+  updateUser(id: number, name: string): void {
     let user: User;
     /* Een dialoogvenster openen */
     let dialogRef = this.dialog.open(DialogUsernameComponent, {
@@ -131,7 +100,6 @@ export class TableComponent implements AfterViewInit, OnInit {
             }
           )
         }
-        //console.log(`Dialog result: id=${user.id}, name=${user.name}`);
       }
     );
   }

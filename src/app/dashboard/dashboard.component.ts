@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, ViewChild, OnInit, AfterViewInit, HostListener } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 /* Componenten*/
 import { User } from '../user';
 import { Note } from '../note';
@@ -16,15 +16,31 @@ import { MatAccordion } from '@angular/material/expansion';
   styleUrls: ['./dashboard.component.css']
 })
 
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, AfterViewInit {
 
   @ViewChild(MatAccordion) accordion: MatAccordion;
+  @ViewChild('gridContainer') gridContainer;
 
+  /* Het aantal kolommen aanpassen volgens de breedte van het scherm */
+  columnNum = 4; // initiële kolombreedte
+  setColNum() {
+    this.width = this.gridContainer.nativeElement.offsetWidth;
+    if (this.width < 500) { this.columnNum = 1; }
+    if (this.width > 500 && this.width < 900) { this.columnNum = 2; }
+    if (this.width > 900) { this.columnNum = 4; }
+  }
+
+  /* Herberekenen wanneer de grootte van het scherm verandert */
+  @HostListener('window:resize', ['$event'])
+  onResize(event) {
+    this.setColNum();
+  }
+
+  width: number;
   selectedValue: string;
-  
   notes: Note[];
 
-  // Route parameters
+  /* Route parameters */
   userId = +this.route.snapshot.paramMap.get('id'); // user.id
   userName = this.route.snapshot.paramMap.get('name'); // user.name
 
@@ -32,11 +48,16 @@ export class DashboardComponent implements OnInit {
     private route: ActivatedRoute,
     private notesService: NotesService,
     public dialog: MatDialog, 
-    public snackBar: MatSnackBar
+    public snackBar: MatSnackBar,
   ) { }
   
   ngOnInit(): void {
     this.getNoteFromUser(this.userName);
+  }
+
+  /* Aantal kolommen berekenen na het laden */
+  ngAfterViewInit() {
+    this.setColNum();
   }
 
   getNoteFromUser(name: string): void {

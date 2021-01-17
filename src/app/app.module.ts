@@ -6,12 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 // Is nodig om http verkeer te sturen naar de backend
 import { HttpClientModule } from '@angular/common/http';
-// De verschillende componenten
-import { UserComponent } from './user/user.component';
-import { NoteComponent } from './note/note.component';
-import { NoteDetailComponent } from './note-detail/note-detail.component';
-import { UserDetailComponent } from './user-detail/user-detail.component';
-import { NoteSearchComponent } from './note-search/note-search.component';
+/* De verschillende componenten */
 import { NavComponent } from './nav/nav.component';
 import { TableComponent } from './table/table.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -42,11 +37,6 @@ import { MatSelectModule } from '@angular/material/select';
 @NgModule({
   declarations: [
     AppComponent,
-    UserComponent,
-    NoteComponent,
-    NoteDetailComponent,
-    UserDetailComponent,
-    NoteSearchComponent,
     NavComponent,
     DashboardComponent,
     TableComponent,

@@ -1,27 +1,16 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-
-import { UserComponent } from './user/user.component';
-import { NoteComponent } from './note/note.component';
-import { UserDetailComponent } from './user-detail/user-detail.component';
-import { NoteDetailComponent } from './note-detail/note-detail.component';
-import { NoteSearchComponent } from './note-search/note-search.component';
+/* Componenten */
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TableComponent } from './table/table.component';
 
 const routes: Routes = [
-  // The default route to the users
+  /* De standaard route */
   { path: '', redirectTo: '/table', pathMatch: 'full' },
-  // The routing to the different views
-  { path: 'users', component: UserComponent },
-  { path: 'notes', component: NoteComponent },
-  // A parameterized route that matches the path to the detail view
-  { path: 'userdetail/:id', component: UserDetailComponent },
-  { path: 'notedetail/:id', component: NoteDetailComponent },
-  // Route to the search / filter function
-  { path: 'search/:id', component: NoteSearchComponent },
-  { path: 'dashboard/:id/:name', component: DashboardComponent },
+  /* De route naar de tabel met gebruikers */
   { path: 'table', component: TableComponent },
+  /* Een route met parameters naar de notities*/
+  { path: 'dashboard/:id/:name', component: DashboardComponent },
 ];
 
 @NgModule({

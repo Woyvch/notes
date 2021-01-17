@@ -1,15 +1,17 @@
 <form class="form-field">
   <mat-form-field>
-    <mat-label>Nieuwe gebruiker </mat-label>
+    <mat-label> Nieuwe gebruiker </mat-label>
     <input matInput placeholder="Gebruikersnaam" type="text" #username />
   </mat-form-field>
-  <button mat-button (click)="addUser(username.value); username.value=''">
-    Toevoegen
+  <button 
+    mat-button 
+    (click)="addUser(username.value); username.value=''">
+    <span> Toevoegen </span>
   </button>
 </form>
 
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" class="full-width-table" matSort aria-label="Users">
+  <table mat-table [dataSource]="dataSource" class="full-width-table" aria-label="Users">
     <!-- Id Column -->
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef> Id </th>
@@ -24,13 +26,42 @@
     <ng-container matColumnDef="options">
       <th mat-header-cell *matHeaderCellDef> Opties </th>
       <td mat-cell *matCellDef="let row">
-          <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Toggle menu">
-            <mat-icon>more_vert</mat-icon>
+          <button 
+            mat-icon-button
+            [matMenuTriggerFor]="menu" 
+            aria-label="Toggle menu">
+            <mat-icon> more_vert </mat-icon>
           </button>
           <mat-menu #menu="matMenu" xPosition="before">
-            <button mat-menu-item routerLink="/dashboard/{{row.id}}/{{row.name}}"> Notities </button>
-            <button mat-menu-item (click)="deleteUser(row.id, row.name)"> Verwijder </button>
-            <button mat-menu-item (click)="openDialog(row.id, row.name)"> Wijzig naam </button>
+            <button 
+              mat-menu-item 
+              routerLink="/dashboard/{{row.id}}/{{row.name}}">
+              <mat-icon>description</mat-icon>
+              <span> Notities </span>
+            </button>
+            <button 
+              mat-menu-item
+              [matMenuTriggerFor]="bevestigen">
+              <mat-icon> delete </mat-icon>
+              <span> Verwijder </span>
+            </button>
+            <button 
+              mat-menu-item 
+              (click)="updateUser(row.id, row.name)">
+              <mat-icon> edit </mat-icon>
+              <span> Wijzig naam </span>
+            </button>
+          </mat-menu>
+          <mat-menu #bevestigen="matMenu">
+            <button 
+              mat-menu-item>
+              <span> Annuleer </span>
+            </button>
+            <button 
+              mat-menu-item 
+              (click)="deleteUser(row.id, row.name)">
+              <span> Ok </span>
+            </button>
           </mat-menu>
       </td>
     </ng-container>
